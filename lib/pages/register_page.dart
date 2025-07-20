@@ -1,9 +1,51 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _birthController = TextEditingController();
+
+  Widget _buildField({
+    required String label,
+    required String hint,
+    bool isPassword = false,
+    bool isEmail = false,
+    required TextEditingController controller,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 48),
+      child: TextFormField(
+        controller: controller,
+        cursorColor: Colors.orange,
+        style: TextStyle(fontWeight: FontWeight.bold),
+        obscureText: isPassword,
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hint,
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.orange),
+          ),
+        ),
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Ingrese su $label";
+          }
+          if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value.trim()) && isEmail) {
+            return "Ingrese un correo válido";
+          }
+          if (value.trim().length < 6 && isPassword) {
+            return "La contraseña debe contener al menos 6 caracteres";
+          }
+          return null;
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +60,13 @@ class RegisterPage extends StatelessWidget {
               Container(
                 height: heigthScreen,
                 width: widthScreen,
-                // decoration: BoxDecoration(color: Color(0xff113A2D)),
-                decoration: BoxDecoration(color: Colors.red),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xff113A2D), Colors.white],
+                    stops: [0.5, 0.5],
+                  ),
+                ),
+                // decoration: BoxDecoration(color: Colors.red),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -62,48 +109,96 @@ class RegisterPage extends StatelessWidget {
                           ],
                         ),
                       ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 32,
+                          horizontal: 40,
+                        ),
+                        height: heigthScreen - 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                          ),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          children: [
+                            _buildField(
+                              label: "Nombre",
+                              hint: "Ingresa tu nombre",
+                              controller: _nameController,
+                            ),
+                            _buildField(
+                              label: "Correo electrónico",
+                              hint: "Ingresa el correo",
+                              controller: _emailController,
+                              isEmail: true,
+                            ),
+                            _buildField(
+                              label: "Teléfono",
+                              hint: "Ingresa tu contacto",
+                              controller: _phoneController,
+                              isEmail: true,
+                            ),
+                            _buildField(
+                              label: "Fecha de cumpleaños",
+                              hint: "Ingresa tu nacimiento",
+                              controller: _birthController,
+                              isPassword: true,
+                            ),
+                            _buildField(
+                              label: "Contraseña",
+                              hint: "Ingresa la contraseña",
+                              controller: _passwordController,
+                              isPassword: true,
+                            ),
+
+                            SizedBox(
+                              width: double.infinity,
+                              height: 60,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xff6E9774),
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: () {},
+                                child: Text(
+                                  "REGÍSTRATE",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 35),
+                            RichText(
+                              text: TextSpan(
+                                text: "Si ya tienes una cuenta  ",
+                                style: TextStyle(color: Colors.black),
+                                children: [
+                                  TextSpan(
+                                    text: "INICIA SESIÓN",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Color(0xff113A2D),
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        print("INICIAR SESIÓN");
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-
-              // Column(
-              //   children: [
-              //     TextFormField(
-              //       controller: _emailController,
-              //       decoration: InputDecoration(
-              //         labelText: "Correo electrónico",
-              //       ),
-              //       keyboardType: TextInputType.emailAddress,
-              //       validator: (value) {
-              //         if (value == null || value.isEmpty) {
-              //           return "Ingrese su correo electrónico";
-              //         }
-              //         if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value.trim())) {
-              //           return "Ingrese un correo válido";
-              //         }
-              //         return null;
-              //       },
-              //     ),
-              //     TextFormField(
-              //       controller: _passwordController,
-              //       decoration: InputDecoration(
-              //         labelText: "Ingresa la contaseña",
-              //       ),
-              //       obscureText: true,
-              //       validator: (value) {
-              //         if (value == null || value.isEmpty) {
-              //           return "Ingrese su correo electrónico";
-              //         }
-              //         if (value.trim().length < 6) {
-              //           return "La contraseña debe contener al menos 6 caracteres";
-              //         }
-              //         return null;
-              //       },
-              //     ),
-              //     ElevatedButton(onPressed: () {}, child: Text("Registrar")),
-              //   ],
-              // ),
             ],
           ),
         ),
