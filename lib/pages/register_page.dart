@@ -1,8 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:votacionesappg12/pages/auth_service.dart';
+import 'package:votacionesappg12/pages/home_page.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -18,7 +25,7 @@ class RegisterPage extends StatelessWidget {
     required TextEditingController controller,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 48),
+      padding: const EdgeInsets.only(bottom: 35),
       child: TextFormField(
         controller: controller,
         cursorColor: Colors.orange,
@@ -51,8 +58,31 @@ class RegisterPage extends StatelessWidget {
   Future<void> regiter() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // User? user = await authser
-      } catch (e) {}
+        User? user = await AuthService.registerWithEmailPassword(
+          _emailController.text,
+          _passwordController.text,
+        );
+
+        if (user != null) {
+          print("USUARIO CREADO");
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        } else {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text("Error al registrar usuario")));
+        }
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error: ${e.message}")));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Otro tipo de error: ${e.toString()}")),
+        );
+      }
     }
     ;
   }
@@ -148,7 +178,6 @@ class RegisterPage extends StatelessWidget {
                               label: "Teléfono",
                               hint: "Ingresa tu contacto",
                               controller: _phoneController,
-                              isEmail: true,
                             ),
                             _buildField(
                               label: "Fecha de cumpleaños",
@@ -171,7 +200,9 @@ class RegisterPage extends StatelessWidget {
                                   backgroundColor: Color(0xff6E9774),
                                   foregroundColor: Colors.white,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  regiter();
+                                },
                                 child: Text(
                                   "REGÍSTRATE",
                                   style: TextStyle(
@@ -195,9 +226,7 @@ class RegisterPage extends StatelessWidget {
                                       color: Color(0xff113A2D),
                                     ),
                                     recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        print("INICIAR SESIÓN");
-                                      },
+                                      ..onTap = () {},
                                   ),
                                 ],
                               ),
