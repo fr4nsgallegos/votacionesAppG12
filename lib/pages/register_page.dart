@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -45,6 +46,15 @@ class RegisterPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> regiter() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        // User? user = await authser
+      } catch (e) {}
+    }
+    ;
   }
 
   @override
