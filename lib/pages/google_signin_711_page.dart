@@ -51,6 +51,13 @@ class _GoogleSignin711PageState extends State<GoogleSignin711Page> {
     }
   }
 
+  Future<void> _handleSignOut() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+    _account = null;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +82,9 @@ class _GoogleSignin711PageState extends State<GoogleSignin711Page> {
                         ),
                       SizedBox(height: 32),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _handleSignOut();
+                        },
                         child: Text("Cerrar sesión"),
                       ),
                     ],
