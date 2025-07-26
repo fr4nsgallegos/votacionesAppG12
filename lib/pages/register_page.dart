@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:votacionesappg12/pages/auth_service.dart';
 import 'package:votacionesappg12/pages/home_page.dart';
+import 'package:votacionesappg12/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -140,15 +141,21 @@ class _RegisterPageState extends State<RegisterPage> {
                                     padding: EdgeInsets.all(24),
                                     child: Row(
                                       children: [
-                                        Container(
-                                          height: 35,
-                                          width: 35,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.orangeAccent,
-                                          ),
-                                          child: Icon(
-                                            Icons.keyboard_arrow_left_outlined,
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                            height: 35,
+                                            width: 35,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.orangeAccent,
+                                            ),
+                                            child: Icon(
+                                              Icons
+                                                  .keyboard_arrow_left_outlined,
+                                            ),
                                           ),
                                         ),
                                         SizedBox(width: 16),
@@ -242,7 +249,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                             color: Color(0xff113A2D),
                                           ),
                                           recognizer: TapGestureRecognizer()
-                                            ..onTap = () {},
+                                            ..onTap = () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginPage(),
+                                                ),
+                                              );
+                                            },
                                         ),
                                       ],
                                     ),
