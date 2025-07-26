@@ -54,26 +54,26 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> _signInWithGoogle() async {
-    try {
-      GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
+  // Future<void> _signInWithGoogle() async {
+  //   try {
+  //     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //     if (googleUser != null) {
+  //       final GoogleSignInAuthentication googleSignInAuthentication =
+  //           await googleUser.authentication;
+  //       final credential = GoogleAuthProvider.credential(
+  //         accessToken: googleSignInAuthentication.accessToken,
+  //         idToken: googleSignInAuthentication.idToken,
+  //       );
 
-        UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithCredential(credential);
-        User? user = userCredential.user;
-        print("--------------------------------");
-        print(user);
-        print("--------------------------------");
-      }
-    } catch (e) {}
-  }
+  //       UserCredential userCredential = await FirebaseAuth.instance
+  //           .signInWithCredential(credential);
+  //       User? user = userCredential.user;
+  //       print("--------------------------------");
+  //       print(user);
+  //       print("--------------------------------");
+  //     }
+  //   } catch (e) {}
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text("Ó inicia sesión con"),
                         ElevatedButton(
                           onPressed: () {
-                            _signInWithGoogle();
+                            // _signInWithGoogle();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: CircleBorder(),
