@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:votacionesappg12/pages/auth_service.dart';
 import 'package:votacionesappg12/pages/register_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -132,7 +133,7 @@ class LoginPage extends StatelessWidget {
                   children: [
                     _buildField(
                       label: "Correo electrónico",
-                      hint: "Ingresa el corre",
+                      hint: "Ingresa el correo",
                       controller: _emailController,
                     ),
                     _buildField(
@@ -166,7 +167,13 @@ class LoginPage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xff6F9675),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          AuthService.loginWithEmailPassword(
+                            _emailController.text,
+                            _passwordController.text,
+                            context,
+                          );
+                        },
                         child: Text(
                           "INICIAR SESIÓN",
                           style: TextStyle(
