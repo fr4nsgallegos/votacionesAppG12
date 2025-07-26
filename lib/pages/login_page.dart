@@ -1,9 +1,19 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:votacionesappg12/pages/auth_service.dart';
 import 'package:votacionesappg12/pages/register_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
+
   TextEditingController _passwordController = TextEditingController();
 
   Widget _buildField({
@@ -42,6 +52,27 @@ class LoginPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithCredential(credential);
+        User? user = userCredential.user;
+        print("--------------------------------");
+        print(user);
+        print("--------------------------------");
+      }
+    } catch (e) {}
   }
 
   @override
@@ -123,7 +154,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                 height: screenHeigth / 2 + 24,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -197,6 +228,21 @@ class LoginPage extends StatelessWidget {
                             );
                           },
                           child: Text("CREA UNA"),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Ó inicia sesión con"),
+                        ElevatedButton(
+                          onPressed: () {
+                            _signInWithGoogle();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: CircleBorder(),
+                          ),
+                          child: Icon(Icons.g_mobiledata, weight: 50),
                         ),
                       ],
                     ),
